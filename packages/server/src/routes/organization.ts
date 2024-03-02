@@ -18,6 +18,22 @@ export async function addOrganizationRoutes(path: string, server: APIGroupServer
     }
   )
 
+  // get one organization by id
+  server.get(
+    `${path}/:id`,
+    async ({ bearer, params, jwt }) => {
+      const user = (await jwt.verify(bearer)) as UserClaims
+      const ret = await db.query.organizations.findMany({
+        where: and(eq(organizations.creatorId, user.id), eq(organizations.id, params.id)),
+      })
+      return ret.length ? ret[0] : null
+    }, {
+      params: t.Object({
+        id: t.String()
+      })
+    }
+  )
+
   // create a new organization
   server.post(
     path,

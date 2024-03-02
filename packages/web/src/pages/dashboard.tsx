@@ -33,7 +33,7 @@ const DashboardLayout = () => {
     <div>
       <header className="h-15 flex items-center shadow">
         <div className="container max-w-240 px-2 mx-auto flex justify-between items-center">
-          <NavLink to={AppRoutes.Dashboard} className="text-2xl font-bold text-primary">Fake SMS</NavLink>
+          <NavLink to={AppRoutes.Dashboard} className="text-2xl font-bold text-primary">Sync Gitea Server</NavLink>
           <Dropdown
             menu={{
               items: [{ key: 'logout', label: 'Logout', onClick: confirmLogout }]

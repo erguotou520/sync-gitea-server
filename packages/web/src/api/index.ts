@@ -76,6 +76,10 @@ export function getOrganizations() {
   return request('/api/organizations')
 }
 
+export function getOneOrganization(id: string) {
+  return request(`/api/organizations/${id}`)
+}
+
 export function createOrganization(data: any) {
   return request('/api/organizations', {
     method: 'POST',

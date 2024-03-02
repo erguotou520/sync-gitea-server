@@ -23,7 +23,7 @@ export type OrganizationType = {
   giteaUrl: string
   giteaToken?: string
   createdAt: string
-  updatedAt: string
+  updatedAt?: string
 }
 
 export type AppType = {
@@ -37,5 +37,5 @@ export type AppType = {
   generatedWebhookUrl?: string
   organization: OrganizationType
   createdAt: string
-  updatedAt: string
+  updatedAt?: string
 }

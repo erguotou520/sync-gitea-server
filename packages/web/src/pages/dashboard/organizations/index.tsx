@@ -1,10 +1,12 @@
 import { getOrganizations, removeOrganization } from '@/api'
+import { AppRoutes } from '@/constants'
 import { OrganizationType } from '@/types'
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons'
 import { useRequest } from 'ahooks'
 import { Button, Card, Empty, Modal, message as AntMessage } from 'antd'
 import { useRef } from 'react'
-import EditOrganizationModal, { EditOrganizationModalActions } from './components/EditModal'
+import { NavLink } from 'react-router-dom'
+import EditOrganizationModal, { EditOrganizationModalActions } from './components/EditOrganizationModal'
 
 const { useModal } = Modal
 
@@ -14,7 +16,7 @@ const OrganizationsPage = () => {
 
   const modalRef = useRef<EditOrganizationModalActions>()
 
-  const request = useRequest<{ list: OrganizationType[]; total: number }, [{ current: number; pageSize: number }]>(
+  const request = useRequest<OrganizationType[], []>(
     async () => {
       const { error, data } = await getOrganizations()
       return error ? [] : data
@@ -52,22 +54,22 @@ const OrganizationsPage = () => {
 
   return (
     <>
-      {!!request.data?.list.length && createBtn}
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {request.data?.list.map(organization => (
+      {!!request.data?.length && createBtn}
+      <div className="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {request.data?.map(organization => (
           <Card
             key={organization.id}
-            title={organization.name}
+            title={<NavLink className="text-foreground" to={`${AppRoutes.Organizations}/${organization.id}`}>{organization.name}</NavLink>}
             actions={[
               <EditOutlined className="cursor-pointer" onClick={() => editOrganization(organization)} />,
               <DeleteOutlined className="!hover:text-red-500 cursor-pointer" onClick={() => confirmDelete(organization)} />
             ]}
           >
-            <div className="text-xs italic">created at: {organization.createdAt}</div>
+            <div className="text-sm">{organization.giteaUrl}</div>
           </Card>
         ))}
       </div>
-      {!request.loading && request.data?.list.length === 0 && (
+      {!request.loading && request.data?.length === 0 && (
         <Empty className="my-10 flex flex-col items-center justify-center" description="No organizations found.">
           {createBtn}
         </Empty>

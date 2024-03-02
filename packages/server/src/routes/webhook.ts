@@ -8,23 +8,33 @@ import type { ServerType } from '..'
 export async function addWebhookRoutes(path: string, server: ServerType) {
   server.post(
     `${path}/:organizationId/:appId/codeup`,
-    async ({ params, set, log }) => {
+    async ({ params, headers, set, log }) => {
       const { organizationId, appId } = params
-      const organization = await db.query.organizations.findFirst({
-        where: eq(organizations.id, organizationId)
-      })
-      if (!organization) {
+      const codeupEvent = headers['Codeup-Event']
+      if (codeupEvent !== 'Push Hook' && codeupEvent !== 'Tag Push Hook') {
+        return {}
+      }
+
+      const _organization = await db.select().from(organizations).where(eq(organizations.id, organizationId)).limit(1)
+      if (_organization.length < 1) {
         set.status = 404
         return 'Organization not found'
       }
-
-      const app = await db.query.apps.findFirst({
-        where: eq(apps.id, appId)
-      })
-      if (!app) {
+      const organization = _organization[0]
+      const _app = await db.select().from(apps).where(eq(apps.id, appId)).limit(1)
+      if (_app.length < 1) {
         set.status = 404
         return 'App not found'
       }
+      const app = _app[0]
+      // has valid header token?
+      if (app.upstreamSecretToken) {
+        if (app.upstreamSecretToken !== headers['X-Codeup-Token']) {
+          set.status = 401
+          return 'Invalid token'
+        }
+      }
+
       const giteaUrl = organization.giteaUrl || process.env.GITEA_URL
       const giteaToken = app.giteaToken || organization.giteaToken || process.env.GITEA_TOKEN
       if (!giteaUrl ||!giteaToken) {
@@ -37,6 +47,7 @@ export async function addWebhookRoutes(path: string, server: ServerType) {
       } else {
         log.info('success')
       }
+      return ret
     },
     {
       params: t.Object({

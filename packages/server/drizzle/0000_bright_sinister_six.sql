@@ -4,7 +4,7 @@ CREATE TABLE `apps` (
 	`updated_at` text DEFAULT (datetime('now', 'localtime')),
 	`name` text NOT NULL,
 	`upstream_repo_type` text NOT NULL,
-	`upstream_repo_url` text NOT NULL,
+	`upstream_repo_url` text,
 	`upstream_secret_token` text,
 	`gitea_repo` text NOT NULL,
 	`gitea_token` text,

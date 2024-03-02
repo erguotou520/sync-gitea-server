@@ -8,7 +8,7 @@ import { registerAPIRoutes } from './routes'
 
 const port = process.env.PORT || 7879
 const server = new Elysia()
-  .use(logger({ level: process.env.LOG_LEVEL ?? 'info' }))
+  .use(logger({ autoLogging: false, level: process.env.LOG_LEVEL ?? 'info' }))
   .use(
     swagger({
       scalarCDN: 'https://cdnjs.cloudflare.com/ajax/libs/scalar-api-reference/1.16.2/standalone.min.js'

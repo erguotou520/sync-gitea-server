@@ -39,7 +39,7 @@ export const apps = sqliteTable('apps', {
   ...commonColumns(),
   name: text('name').notNull(),
   upstreamRepoType: text('upstream_repo_type', { enum: ['codeup'] }).notNull(),
-  upstreamRepoUrl: text('upstream_repo_url').notNull(),
+  upstreamRepoUrl: text('upstream_repo_url'),
   upstreamSecretToken: text('upstream_secret_token'),
   giteaRepo: text('gitea_repo').notNull(),
   giteaToken: text('gitea_token'),

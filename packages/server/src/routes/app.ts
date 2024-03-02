@@ -21,11 +21,11 @@ export async function addAppRoutes(path: string, server: APIGroupServerType) {
         return 'Organization not found'
       }
       const list = await db.query.apps.findMany({
-        where: eq(apps.organizationId, organization.id),
+        where: eq(apps.organizationId, params.orgId),
         offset: query.offset ?? 0,
         limit: query.limit ?? 10
       })
-      const total = await db.select({ value: count() }).from(apps).where(eq(apps.organizationId, organization.id))
+      const total = await db.select({ value: count() }).from(apps).where(eq(apps.organizationId, params.orgId))
       return { list, total: total[0].value }
     },
     {
@@ -52,7 +52,7 @@ export async function addAppRoutes(path: string, server: APIGroupServerType) {
         return 'Organization not found'
       }
       const sameApp = await db.query.apps.findFirst({
-        where: and(eq(apps.name, body.name), eq(apps.organizationId, organization.id))
+        where: and(eq(apps.name, body.name), eq(apps.organizationId, params.orgId))
       })
       if (sameApp) {
         set.status = 400
@@ -66,8 +66,8 @@ export async function addAppRoutes(path: string, server: APIGroupServerType) {
             {
               ...body,
               id,
-              organizationId: organization.id,
-              generatedWebhookUrl: generateWebhookUrl(body.upstreamRepoType, organization.id, id)
+              organizationId: params.orgId,
+              generatedWebhookUrl: generateWebhookUrl(body.upstreamRepoType, params.orgId, id)
             }
           ])
           .returning()
@@ -87,7 +87,7 @@ export async function addAppRoutes(path: string, server: APIGroupServerType) {
       body: t.Object({
         name: t.String(),
         upstreamRepoType: t.Enum({ Codeup: 'codeup' }),
-        upstreamRepoUrl: t.String(),
+        upstreamRepoUrl: t.Optional(t.String()),
         upstreamSecretToken: t.Optional(t.String()),
         giteaRepo: t.String(),
         giteaToken: t.Optional(t.String()),
@@ -110,7 +110,7 @@ export async function addAppRoutes(path: string, server: APIGroupServerType) {
       try {
         const ret = await db.update(apps).set({
           ...body,
-          generatedWebhookUrl: generateWebhookUrl(body.upstreamRepoType, organization.id, params.id),
+          generatedWebhookUrl: generateWebhookUrl(body.upstreamRepoType, params.orgId, params.id),
           updatedAt: sql`(datetime('now', 'localtime'))`
         }).where(eq(apps.id, params.id)).returning()
         if (ret.length > 0) {
@@ -130,7 +130,7 @@ export async function addAppRoutes(path: string, server: APIGroupServerType) {
       body: t.Object({
         name: t.String(),
         upstreamRepoType: t.Enum({ Codeup: 'codeup' }),
-        upstreamRepoUrl: t.String(),
+        upstreamRepoUrl: t.Optional(t.String()),
         upstreamSecretToken: t.Optional(t.String()),
         giteaRepo: t.String(),
         giteaToken: t.Optional(t.String()),

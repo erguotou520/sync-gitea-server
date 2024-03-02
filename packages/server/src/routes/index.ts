@@ -23,7 +23,7 @@ export function registerAPIRoutes(server: ServerType) {
     app => {
       addUserRoutes('/user', app)
       addOrganizationRoutes('/organizations', app)
-      addAppRoutes('/apps', app)
+      addAppRoutes('/apps/:orgId', app)
       return app
     }
   )
