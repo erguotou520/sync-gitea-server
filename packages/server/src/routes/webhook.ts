@@ -10,8 +10,9 @@ export async function addWebhookRoutes(path: string, server: ServerType) {
     `${path}/:organizationId/:appId/codeup`,
     async ({ params, headers, set, log }) => {
       const { organizationId, appId } = params
-      const codeupEvent = headers['Codeup-Event']
+      const codeupEvent = headers['x-codeup-event']
       if (codeupEvent !== 'Push Hook' && codeupEvent !== 'Tag Push Hook') {
+        log.info(`Ignore event: ${codeupEvent}`)
         return {}
       }
 
@@ -29,7 +30,7 @@ export async function addWebhookRoutes(path: string, server: ServerType) {
       const app = _app[0]
       // has valid header token?
       if (app.upstreamSecretToken) {
-        if (app.upstreamSecretToken !== headers['X-Codeup-Token']) {
+        if (app.upstreamSecretToken !== headers['x-codeup-token']) {
           set.status = 401
           return 'Invalid token'
         }
