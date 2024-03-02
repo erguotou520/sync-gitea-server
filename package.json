@@ -1,6 +1,7 @@
 {
   "name": "sync-gitea-server",
   "author": "erguotou525@gmail.com",
+  "version": "0.1.0",
   "devDependencies": {
     "@biomejs/biome": "^1.5.3",
     "@doremijs/biome-config": "^0.1.3",

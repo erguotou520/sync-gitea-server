@@ -1,5 +1,7 @@
 import { getApps, getOneOrganization, removeApp } from '@/api'
+import { useInfo } from '@/store'
 import { AppType, OrganizationType } from '@/types'
+import { copy } from '@/utils'
 import { CopyOutlined, DeleteOutlined, EditOutlined, MessageOutlined, PlusOutlined, SettingOutlined } from '@ant-design/icons'
 import { usePagination } from 'ahooks'
 import { Breadcrumb, Button, Card, Descriptions, Divider, Drawer, Empty, Modal, Pagination, message as AntMessage } from 'antd'
@@ -12,6 +14,7 @@ const { useModal } = Modal
 const PAGE_SIZE = 12
 
 const AppsPage = () => {
+  const { info } = useInfo()
   const params = useParams()
   const [organization, setOrganization] = useState<OrganizationType | null>(null)
   const orgId = params.id as string
@@ -44,12 +47,6 @@ const AppsPage = () => {
         }
       }
     })
-  }
-
-  function copy(text?: string) {
-    if (!text) return
-    navigator.clipboard.writeText(text)
-    message.success('Copied to clipboard.')
   }
 
   const createApp = () => {
@@ -122,10 +119,10 @@ const AppsPage = () => {
             {
               label: 'Generated Webhook URL', children: (
                 <>
-                  <div className="truncate">{location.origin}{viewingApp?.generatedWebhookUrl}</div>
+                  <div className="truncate">{info.publicUrl}{viewingApp?.generatedWebhookUrl}</div>
                   <CopyOutlined
                     className="ml-2 cursor-pointer hover:text-primary"
-                    onClick={() => copy(location.origin + viewingApp!.generatedWebhookUrl)}
+                    onClick={() => copy(info.publicUrl + viewingApp!.generatedWebhookUrl)}
                   />
                 </>
               )

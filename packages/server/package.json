@@ -1,7 +1,7 @@
 {
   "name": "@sync-gitea-server/server",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "module": "src/index.ts",
   "scripts": {
     "migrate": "bun run src/db/migrate.ts",

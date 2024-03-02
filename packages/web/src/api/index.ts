@@ -54,6 +54,10 @@ function appendParams(url: string, params: Record<string, string | number>) {
   return `${url}?${queryParams.toString()}`
 }
 
+export function getInfo() {
+  return request('/api/info')
+}
+
 export function getMyInfo() {
   return request('/api/user/me')
 }

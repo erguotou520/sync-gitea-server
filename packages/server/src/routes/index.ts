@@ -21,6 +21,11 @@ export function registerAPIRoutes(server: ServerType) {
       }
     },
     app => {
+      app.get('/info', () => {
+        return {
+          publicUrl: process.env.PUBLIC_URL
+        }
+      })
       addUserRoutes('/user', app)
       addOrganizationRoutes('/organizations', app)
       addAppRoutes('/apps/:orgId', app)
