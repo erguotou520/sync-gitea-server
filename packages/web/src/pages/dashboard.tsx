@@ -1,5 +1,5 @@
 import { AppRoutes } from '@/constants'
-import { useAuth, useInfo } from '@/store'
+import { useAuth } from '@/store'
 import { Dropdown, Modal } from 'antd'
 import { useEffect } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -7,7 +7,6 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 const { useModal } = Modal
 
 const DashboardLayout = () => {
-  const { init } = useInfo()
   const navigate = useNavigate()
   const { pathname } = useLocation()
   const { user, logout } = useAuth()
@@ -29,10 +28,6 @@ const DashboardLayout = () => {
       navigate(AppRoutes.Organizations, { replace: true })
     }
   }, [pathname, navigate])
-
-  useEffect(() => {
-    init()
-  }, [init])
 
   return (
     <div>

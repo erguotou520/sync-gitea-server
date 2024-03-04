@@ -1,1 +1,0 @@
-import{u as o,a as u,r as n,A as t,j as r}from"./index-tUupWX2Z.js";const g=()=>{const e=o(),{computed:{logged:s},ready:a}=u();return n.useEffect(()=>{a&&e(s?t.Dashboard:t.Login)},[s,a,e]),r.jsxDEV(r.Fragment,{},void 0,!1,{fileName:"/Users/erguotou/workspace/erguotou/sync-gitea-server/packages/web/src/pages/index.tsx",lineNumber:21,columnNumber:10},void 0)};export{g as default};

@@ -55,7 +55,7 @@ function appendParams(url: string, params: Record<string, string | number>) {
 }
 
 export function getInfo() {
-  return request('/api/info')
+  return request('/info')
 }
 
 export function getMyInfo() {

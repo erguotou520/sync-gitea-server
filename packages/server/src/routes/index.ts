@@ -23,11 +23,6 @@ export function registerAPIRoutes(server: ServerType) {
       }
     },
     app => {
-      app.get('/info', () => {
-        return {
-          publicUrl: process.env.PUBLIC_URL
-        }
-      })
       addUserRoutes('/user', app)
       addOrganizationRoutes('/organizations', app)
       addAppRoutes('/apps/:orgId', app)
@@ -35,5 +30,11 @@ export function registerAPIRoutes(server: ServerType) {
     }
   )
 
+  server.get('/info', () => {
+    return {
+      publicUrl: process.env.PUBLIC_URL ?? null,
+      disableRegistration: process.env.DISABLE_REGISTRATION === 'true'
+    }
+  })
   addWebhookRoutes('/webhook', server)
 }

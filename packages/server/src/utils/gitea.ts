@@ -13,7 +13,7 @@ export async function syncGiteaRepo(giteaUrl: string, giteaRepo: string, giteaTo
     const resp = await fetch(apiUrl, {
       method: 'POST',
       headers: {
-        'Authorization': `token ${giteaToken}`,
+        Authorization: `token ${giteaToken}`,
         'Content-Type': 'application/json'
       },
     })
