@@ -4,16 +4,16 @@ This project is a webhook server to help us to synchronize `Gitea` repository ch
 
 When the upstream repository is updated, it send a webhook event to this server, and then the server call the `Gitea` API to synchronize the changes.
 
-<!-- <table>
+<table>
   <tr>
     <td>
-      <img src="./assets/screen1.png" width="300" />
+      <img src="./assets/apps.png" width="300" />
     </td>
     <td>
-      <img src="./assets/notifications.png" width="300" />
+      <img src="./assets/sync-url.png" width="300" />
     </td>
   </tr>
-</table> -->
+</table>
 
 ## How to Use
 
@@ -26,6 +26,7 @@ When the upstream repository is updated, it send a webhook event to this server,
 - `ENABLE_LOG_IP`: Whether to enable logging IP address in webhook event, default is `false`.
 - `GITEA_URL`: The URL of the `Gitea` server. Used for all apps as fallback.
 - `GITEA_TOKEN`: The token of the `Gitea` user. Used for all apps as fallback.
+- `DISABLE_REGISTRATION`: Whether to disable registration, default is `false`.
 
 ## Development
 

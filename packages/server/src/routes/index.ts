@@ -8,7 +8,9 @@ import { addWebhookRoutes } from './webhook'
 
 export function registerAPIRoutes(server: ServerType) {
   server.get('/health', () => ({ status: 'ok' }))
-  addRegisterRoutes('/register', server)
+  if (process.env.DISABLE_REGISTRATION !== 'true') {
+    addRegisterRoutes('/register', server)
+  }
   addLoginRoutes('/login', server)
   server.group(
     '/api',
