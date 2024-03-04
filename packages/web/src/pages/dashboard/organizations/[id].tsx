@@ -57,6 +57,11 @@ const AppsPage = () => {
     modalRef.current?.openModal(app)
   }
 
+  const copyUrl = (url: string) => {
+    copy(url)
+    message.success('Copied to clipboard.')
+  }
+
   useEffect(() => {
     if (orgId) {
       getOneOrganization(orgId).then(resp => {
@@ -122,7 +127,7 @@ const AppsPage = () => {
                   <div className="truncate">{info.publicUrl}{viewingApp?.generatedWebhookUrl}</div>
                   <CopyOutlined
                     className="ml-2 cursor-pointer hover:text-primary"
-                    onClick={() => copy(info.publicUrl + viewingApp!.generatedWebhookUrl)}
+                    onClick={() => copyUrl(info.publicUrl + viewingApp!.generatedWebhookUrl)}
                   />
                 </>
               )

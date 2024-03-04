@@ -12,7 +12,10 @@
       "program": "src/index.ts",
       "cwd": "${workspaceFolder}/packages/server",
       "stopOnEntry": false,
-      "watchMode": false
+      "watchMode": false,
+      "env": {
+        "ENABLE_LOG_IP": "true"
+      }
     }
   ]
 }

@@ -4,14 +4,13 @@ import { jwt } from '@elysiajs/jwt'
 import { staticPlugin } from '@elysiajs/static'
 import { swagger } from '@elysiajs/swagger'
 import { Elysia } from 'elysia'
-import { ip } from 'elysia-ip'
 import { registerAPIRoutes } from './routes'
 
 const port = process.env.PORT || 7879
 
 const server = new Elysia()
-  .use(ip())
   .use(logger({ autoLogging: false, level: process.env.LOG_LEVEL ?? 'info' }))
+  // .use(app => app.derive(({ request }) => ({ ip: app.server?.requestIP(request) })))
   .use(
     swagger({
       scalarCDN: 'https://cdnjs.cloudflare.com/ajax/libs/scalar-api-reference/1.16.2/standalone.min.js'
@@ -30,14 +29,14 @@ registerAPIRoutes(server)
 
 // log requests
 server.onRequest(({ request }) => {
-  if (!request.url.startsWith('assets/')) {
+  if (!request.url.startsWith('/assets/')) {
     console.log('Request:', request.method, request.url)
   }
 })
 
-server.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`)
-})
+server.listen(port)
+
+console.log(`Server is running on http://${server.server?.hostname}:${port}`)
 
 export type ServerType = typeof server
 

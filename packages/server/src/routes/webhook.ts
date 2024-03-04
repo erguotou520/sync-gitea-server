@@ -8,10 +8,17 @@ import type { ServerType } from '..'
 export async function addWebhookRoutes(path: string, server: ServerType) {
   server.post(
     `${path}/:organizationId/:appId/codeup`,
-    // @ts-ignore
-    async ({ params, headers, set, ip, log }) => {
+    async ({ request, params, headers, set, log }) => {
       if (process.env.ENABLE_LOG_IP === 'true') {
-        log.info(`Received codeup event from: ${ip.address}`)
+        let ip: string | undefined
+        if (headers['x-forwarded-for']) {
+          ip = headers['x-forwarded-for']
+        } else if (headers['x-real-ip']) {
+          ip = headers['x-real-ip']
+        } else {
+          ip = server.server?.requestIP(request)?.address
+        }
+        log.info(`Received codeup event from: ${ip || 'unknown'}`)
       }
       const { organizationId, appId } = params
       const codeupEvent = headers['x-codeup-event']
