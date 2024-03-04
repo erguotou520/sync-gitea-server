@@ -17,6 +17,15 @@ When the upstream repository is updated, it send a webhook event to this server,
 
 ## How to Use
 
+### Environment Variables
+
+- `PORT`: The port of the server, default is `7879`.
+- `LOG_LEVEL`: The log level of the server, default is `info`.
+- `JWT_SECRET`: The secret key of the JWT token.
+- `PUBLIC_URL`: The public URL of the server, used for receiving the webhook event.
+- `ENABLE_LOG_IP`: Whether to enable logging IP address in webhook event, default is `false`.
+- `GITEA_URL`: The URL of the `Gitea` server. Used for all apps as fallback.
+- `GITEA_TOKEN`: The token of the `Gitea` user. Used for all apps as fallback.
 
 ## Development
 

@@ -4,10 +4,13 @@ import { jwt } from '@elysiajs/jwt'
 import { staticPlugin } from '@elysiajs/static'
 import { swagger } from '@elysiajs/swagger'
 import { Elysia } from 'elysia'
+import { ip } from 'elysia-ip'
 import { registerAPIRoutes } from './routes'
 
 const port = process.env.PORT || 7879
+
 const server = new Elysia()
+  .use(ip())
   .use(logger({ autoLogging: false, level: process.env.LOG_LEVEL ?? 'info' }))
   .use(
     swagger({
@@ -22,7 +25,6 @@ const server = new Elysia()
       secret: process.env.JWT_SECRET ?? 'default-secret'
     })
   )
-
 // api routes
 registerAPIRoutes(server)
 

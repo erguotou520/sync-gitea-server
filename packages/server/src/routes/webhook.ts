@@ -8,7 +8,11 @@ import type { ServerType } from '..'
 export async function addWebhookRoutes(path: string, server: ServerType) {
   server.post(
     `${path}/:organizationId/:appId/codeup`,
-    async ({ params, headers, set, log }) => {
+    // @ts-ignore
+    async ({ params, headers, set, ip, log }) => {
+      if (process.env.ENABLE_LOG_IP === 'true') {
+        log.info(`Received codeup event from: ${ip.address}`)
+      }
       const { organizationId, appId } = params
       const codeupEvent = headers['x-codeup-event']
       if (codeupEvent !== 'Push Hook' && codeupEvent !== 'Tag Push Hook') {
